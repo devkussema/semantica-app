@@ -1,372 +1,305 @@
-# 🚀 Semantica Framework
+# 🚀 Semantica Framework - Application Skeleton
 
-![PHP Version](https://img.shields.io/badge/PHP-8.0%2B-blue)
-![License](https://img.shields.io/badge/License-MIT-green)
-![Version](https://img.shields.io/badge/Version-1.0.0-orange)
-![Framework](https://img.shields.io/badge/Framework-Semantica-purple)
+[![PHP Version](https://img.shields.io/badge/PHP-%3E%3D8.0-blue.svg)](https://php.net/)
+[![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+[![Framework](https://img.shields.io/badge/Framework-Semantica-purple.svg)](https://github.com/devkussema/semantica-core)
+[![Version](https://img.shields.io/badge/Version-1.0.0-orange.svg)](https://github.com/devkussema/semantica-app/releases)
 
-> Modern PHP framework inspired by Laravel's elegance with Portuguese-friendly architecture. Perfect for rapid development with a clean, semantic approach.
+Modern PHP framework application skeleton inspired by Laravel's elegance and simplicity.
 
-**Desenvolvido por:** Augusto Kussema  
-**Data:** 28 de setembro de 2025  
-**Versão:** 1.0.0
+**Created by:** Augusto Kussema  
+**Date:** September 28, 2025  
+**Version:** 1.0.0
 
-## 🚀 Instalação
-
-### Via Composer (Recomendado)
+## 📦 Quick Start
 
 ```bash
-composer create-project semantica/app-skeleton minha-aplicacao
-cd minha-aplicacao
+# Install via Composer (replace <folder> with your project name)
+composer create-project devkussema/semantica-app <folder>
+
+# Navigate to project
+cd <folder>
+
+# Make CLI executable (Unix/Linux/macOS)
+chmod +x semantica
+
+# Start development server
+./semantica serve
 ```
 
-### Configuração Inicial
+### Alternative Installation Methods
 
-1. **Configure o arquivo de ambiente:**
+#### Option 1: Specific Version
+```bash
+composer create-project devkussema/semantica-app:^1.0 my-project
+```
+
+#### Option 2: Clone Repository
+```bash
+git clone https://github.com/devkussema/semantica-app.git my-project
+cd my-project
+composer install
+cp .env.example .env
+chmod +x semantica
+```
+
+## 🛠️ Initial Setup
+
+1. **Environment Configuration:**
    ```bash
+   # Copy environment file (done automatically by post-install script)
    cp .env.example .env
+   
+   # Edit your database and app settings
+   nano .env
    ```
 
-2. **Edite o arquivo `.env` com suas configurações:**
-   ```env
-   APP_NAME="Minha Aplicação"
-   APP_ENV=development
-   APP_DEBUG=true
-   APP_URL=http://localhost
-
-   DB_HOST=localhost
-   DB_DATABASE=minha_app
-   DB_USERNAME=root
-   DB_PASSWORD=sua_senha
-   ```
-
-3. **Instale as dependências:**
+2. **Database Setup:**
    ```bash
-   composer install
+   # Run migrations
+   ./semantica migrate
    ```
 
-4. **Configure seu servidor web** para apontar para a pasta `public/`
+3. **Start Development Server:**
+   ```bash
+   # Start built-in server (default: http://localhost:8000)
+   ./semantica serve
+   
+   # Custom host and port
+   ./semantica serve --host=127.0.0.1 --port=8080
+   ```
 
-## 🏗️ Arquitetura
+## 🎯 Features
 
-O framework é dividido em **dois pacotes principais:**
+- **🚀 Laravel-inspired CLI** - Artisan-like command system
+- **🔄 Modern Routing** - Fluent API with groups and middleware
+- **🎨 Theme System** - Dynamic template switching
+- **💾 Multi-Database** - MySQL, PostgreSQL, SQLite support
+- **🧩 Helper Functions** - Laravel-style helper functions
+- **📦 PSR-4 Autoloading** - Modern PHP standards
+- **🛡️ Apache Ready** - Includes .htaccess for clean URLs
 
-### 📦 Core (semantica/core)
-- **Aplicação principal** (`Application.php`)
-- **Gerenciador de templates** (`TemplateManager.php`) 
-- **Gerenciador de banco de dados** (`DatabaseManager.php`)
-- **Sistema HTTP** (Request, Response, Router)
-- **Sistema CLI** (CommandManager)
-- **Gerenciador de configuração** (`ConfigManager.php`)
+## 📚 Available Commands
 
-### 🏠 App Skeleton (semantica/app-skeleton)
-- **Estrutura da aplicação** (controllers, models, templates)
-- **Configurações** (database, app, template)
-- **Rotas** (`routes/web.php`)
-- **Templates por tema**
-- **Comandos CLI** personalizados
-
-## 🎨 Sistema de Templates Dinâmico
-
-### Troca de Temas
-O framework permite trocar temas dinamicamente:
-
-```php
-$app = Application::getInstance();
-$template = $app->getTemplate();
-
-// Trocar tema
-$template->setTema('admin_v1');
-
-// Renderizar com layout
-$html = $template->renderizarComLayout('home', $dados);
+### Framework Commands
+```bash
+./semantica list              # List all available commands
+./semantica serve            # Start development server
+./semantica migrate          # Run database migrations
+./semantica route:list       # List all registered routes
 ```
 
-### Temas Disponíveis
-- **default** - Tema padrão limpo e moderno
-- **admin_v1** - Painel administrativo com sidebar
-- **admin_v2** - Painel administrativo alternativo
-- **blog** - Tema otimizado para blogs
-
-### Estrutura de Templates
-```
-templates/
-├── default/
-│   ├── layouts/
-│   │   └── main.php
-│   ├── home.php
-│   └── users/
-│       ├── index.php
-│       └── show.php
-└── admin_v1/
-    ├── layouts/
-    │   └── main.php
-    └── home.php
+### Code Generation
+```bash
+./semantica make:controller UserController    # Create controller
+./semantica make:model User                   # Create model
+./semantica make:middleware AuthMiddleware    # Create middleware
 ```
 
-## 🗄️ Sistema de Banco de Dados
+## 🏗️ Project Structure
 
-### Múltiplas Conexões
-O framework suporta múltiplas conexões simultâneas:
-
-```php
-$db = $app->getDatabase();
-
-// Conexão padrão
-$usuarios = $db->buscar("SELECT * FROM usuarios");
-
-// Conexão específica
-$dados = $db->buscar("SELECT * FROM produtos", [], 'loja');
-
-// Transações
-$db->iniciarTransacao();
-try {
-    $db->executar("INSERT INTO usuarios (nome) VALUES (?)", ['João']);
-    $db->executar("INSERT INTO perfis (usuario_id) VALUES (?)", [1]);
-    $db->confirmarTransacao();
-} catch (Exception $e) {
-    $db->desfazerTransacao();
-}
+```
+project-root/
+├── app/
+│   ├── Commands/           # CLI commands
+│   ├── Controllers/        # HTTP controllers
+│   └── Models/            # Data models
+├── config/                # Configuration files
+│   ├── app.php           # App configuration
+│   ├── database.php      # Database configuration
+│   └── template.php      # Template configuration
+├── database/
+│   └── migrations/       # Database migrations
+├── public/               # Web root directory
+│   ├── index.php        # Application entry point
+│   └── .htaccess        # Apache configuration
+├── routes/
+│   └── web.php          # Web routes
+├── templates/           # View templates
+│   ├── default/        # Default theme
+│   └── admin_v1/       # Admin theme
+├── .env.example        # Environment template
+├── composer.json       # Composer dependencies
+└── semantica          # CLI tool
 ```
 
-### Configuração de Conexões
-```php
-// config/database.php
-'conexoes' => [
-    'principal' => [
-        'driver' => 'mysql',
-        'host' => 'localhost',
-        'database' => 'app_principal',
-        'usuario' => 'root',
-        'senha' => 'senha'
-    ],
-    'loja' => [
-        'driver' => 'pgsql',
-        'host' => 'localhost',
-        'database' => 'sistema_loja',
-        'usuario' => 'postgres',
-        'senha' => 'senha'
-    ]
-]
-```
+## 🎨 Basic Usage
 
-## 🛣️ Sistema de Roteamento
-
-### Definindo Rotas
+### Routing
 ```php
 // routes/web.php
-$router = $app->getRouter();
+use Semantica\Core\Router;
 
-// Rotas simples
-$router->get('/', function($request) {
-    return new Response('Olá Mundo!');
+Router::get('/', function() {
+    return view('home');
 });
 
-// Rotas com parâmetros
-$router->get('/usuario/{id}', 'UserController@show');
+Router::get('/users/{id}', function($id) {
+    return view('users.show', ['id' => $id]);
+});
 
-// Rotas POST
-$router->post('/usuarios', 'UserController@store');
+// Route groups
+Router::group(['prefix' => 'api'], function() {
+    Router::get('/users', 'UserController@index');
+    Router::post('/users', 'UserController@store');
+});
 ```
 
-### Controladores
+### Controllers
 ```php
+// app/Controllers/UserController.php
 <?php
 
 namespace App\Controllers;
 
-use Semantica\Core\Http\Request;
-use Semantica\Core\Http\Response;
-
 class UserController
 {
-    public function show(Request $request, string $id): Response
+    public function index()
     {
-        $app = Application::getInstance();
-        $template = $app->getTemplate();
-        
-        $dados = ['usuario' => $this->buscarUsuario($id)];
-        $html = $template->renderizarComLayout('users/show', $dados);
-        
-        return new Response($html);
-    }
-}
-```
-
-## 🖥️ Comandos CLI
-
-### Comandos Disponíveis
-
-```bash
-# Ver todos os comandos
-php command.php
-
-# Executar migrações
-php command.php migrate
-
-# Criar controlador
-php command.php make:controller NomeController
-```
-
-### Criar Comandos Personalizados
-
-```php
-<?php
-
-namespace App\Commands;
-
-use Semantica\Core\Console\CommandInterface;
-
-class MeuComando implements CommandInterface
-{
-    public function execute(array $args): int
-    {
-        echo "Executando meu comando personalizado!\n";
-        return 0;
+        return view('users.index', [
+            'users' => ['John', 'Jane', 'Bob']
+        ]);
     }
     
-    public function getDescription(): string
+    public function show($id)
     {
-        return 'Meu comando personalizado';
+        return view('users.show', ['id' => $id]);
     }
 }
 ```
 
-## 🔧 Configuração
-
-### Estrutura de Configuração
-```
-config/
-├── app.php          # Configurações da aplicação
-├── database.php     # Configurações de banco de dados
-└── template.php     # Configurações de templates
-```
-
-### Usando Configurações
+### Views
 ```php
-$config = $app->getConfig();
+// templates/default/users/index.php
+<?php $this->layout('layouts.main') ?>
 
-// Obter configuração
-$debug = $config->get('app.debug', false);
-$host = $config->get('database.conexoes.principal.host');
-
-// Definir configuração
-$config->set('app.timezone', 'Africa/Luanda');
+<h1>Users</h1>
+<ul>
+    <?php foreach ($users as $user): ?>
+        <li><?= htmlspecialchars($user) ?></li>
+    <?php endforeach; ?>
+</ul>
 ```
 
-## 📁 Estrutura do Projeto
-
-```
-minha-aplicacao/
-├── app/
-│   ├── Controllers/        # Controladores
-│   ├── Models/            # Modelos (implementar conforme necessário)
-│   └── Commands/          # Comandos CLI personalizados
-├── config/                # Arquivos de configuração
-├── database/
-│   └── migrations/        # Migrações de banco de dados
-├── public/
-│   └── index.php         # Ponto de entrada
-├── routes/
-│   └── web.php           # Definição de rotas
-├── templates/            # Templates organizados por tema
-│   ├── default/
-│   └── admin_v1/
-├── vendor/               # Dependências do Composer
-├── .env                  # Variáveis de ambiente
-├── .env.example         # Exemplo de variáveis de ambiente
-├── command.php          # Console CLI
-└── composer.json        # Configuração do Composer
+### Helper Functions
+```php
+// Available everywhere after bootstrap
+$debug = env('APP_DEBUG', false);
+$config = config('app.name');
+$view = view('welcome', ['name' => 'World']);
 ```
 
-## 🚦 Começando
+## ⚙️ Configuration
 
-### 1. Servidor de Desenvolvimento
+### Database Configuration
+```php
+// config/database.php
+return [
+    'default' => 'mysql',
+    'connections' => [
+        'mysql' => [
+            'driver' => 'mysql',
+            'host' => env('DB_HOST', 'localhost'),
+            'port' => env('DB_PORT', 3306),
+            'database' => env('DB_DATABASE'),
+            'username' => env('DB_USERNAME'),
+            'password' => env('DB_PASSWORD'),
+        ],
+    ],
+];
+```
+
+### Environment Variables
 ```bash
-# PHP Built-in Server
-php -S localhost:8000 -t public/
+# .env
+APP_NAME="My Semantica App"
+APP_ENV=local
+APP_DEBUG=true
+APP_URL=http://localhost:8000
 
-# Ou configure no Apache/Nginx apontando para public/
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=my_database
+DB_USERNAME=root
+DB_PASSWORD=
 ```
 
-### 2. Testar Instalação
-Acesse: `http://localhost:8000`
+## 🔧 Apache Configuration
 
-### 3. Testar Banco de Dados
-Acesse: `http://localhost:8000/db-test`
+For production with Apache, point your virtual host to the `public/` directory:
 
-### 4. Ver Usuários de Exemplo
-Acesse: `http://localhost:8000/usuarios`
+```apache
+<VirtualHost *:80>
+    DocumentRoot /path/to/your/project/public
+    ServerName your-domain.com
+    
+    <Directory /path/to/your/project/public>
+        AllowOverride All
+        Require all granted
+    </Directory>
+</VirtualHost>
+```
 
-### 5. Trocar Tema
-Acesse: `http://localhost:8000/tema/admin_v1`
+## 🔄 Updating Framework
 
-## 💡 Exemplos de Uso
+To update to newer versions:
 
-### Criar uma Nova Página
+```bash
+# Update dependencies
+composer update
 
-1. **Criar rota:**
-   ```php
-   // routes/web.php
-   $router->get('/produtos', 'ProductController@index');
-   ```
+# Check for new versions
+composer show devkussema/semantica-core
+```
 
-2. **Criar controlador:**
+## 🐛 Troubleshooting
+
+### Common Issues
+
+1. **"./semantica: Permission denied"**
    ```bash
-   php command.php make:controller ProductController
+   chmod +x semantica
    ```
 
-3. **Criar template:**
-   ```php
-   <!-- templates/default/products/index.php -->
-   <div class="card">
-       <h1><?= htmlspecialchars($titulo) ?></h1>
-       <!-- seu conteúdo aqui -->
-   </div>
-   ```
+2. **"Call to undefined function env()"**
+   - Make sure you're running commands from the project root
+   - Ensure `vendor/autoload.php` exists (run `composer install`)
 
-### Trabalhar com Banco de Dados
+3. **Database connection failed**
+   - Check your `.env` file database settings
+   - Ensure database server is running
+   - Verify credentials
 
-1. **Criar migração:**
-   ```php
-   // database/migrations/YYYY_MM_DD_HHMMSS_criar_tabela_produtos.php
-   class CriarTabelaProdutos
-   {
-       public function up(DatabaseManager $db): void
-       {
-           $sql = "CREATE TABLE produtos (
-               id INT PRIMARY KEY AUTO_INCREMENT,
-               nome VARCHAR(255) NOT NULL,
-               preco DECIMAL(10,2) NOT NULL
-           )";
-           $db->executar($sql);
-       }
-   }
-   ```
+4. **404 errors with Apache**
+   - Ensure mod_rewrite is enabled
+   - Check that `.htaccess` files are present in root and `public/`
+   - Verify Apache configuration allows `.htaccess` overrides
 
-2. **Executar migração:**
-   ```bash
-   php command.php migrate
-   ```
+## 📖 Documentation
 
-## 🤝 Contribuindo
+- [Core Framework](https://github.com/devkussema/semantica-core) - Engine documentation
+- [API Reference](https://github.com/devkussema/semantica-core/wiki) - Detailed API docs
+- [Examples](examples/) - Usage examples and tutorials
 
-1. Fork o projeto
-2. Crie uma branch para sua feature (`git checkout -b feature/nova-feature`)
-3. Commit suas mudanças (`git commit -am 'Adiciona nova feature'`)
-4. Push para a branch (`git push origin feature/nova-feature`)
-5. Abra um Pull Request
+## 🤝 Contributing
 
-## 📜 Licença
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
 
-Este framework está licenciado sob a licença MIT. Veja o arquivo `LICENSE` para mais detalhes.
+## 📄 License
 
-## 🆘 Suporte
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-- **Email:** augusto@semantica.dev
-- **Documentação:** Em desenvolvimento
-- **Issues:** Abra uma issue no repositório
+## 🙏 Acknowledgments
+
+- Inspired by [Laravel Framework](https://laravel.com/)
+- Built with modern PHP 8.0+ features
+- Designed for simplicity and productivity
 
 ---
 
-**Semântica Framework** - Desenvolvido com ❤️ em Angola 🇦🇴
+**Created with ❤️ by [Augusto Kussema](https://github.com/devkussema)**

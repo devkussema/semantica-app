@@ -50,7 +50,11 @@ try {
 } catch (Throwable $e) {
     echo "Error executing command: " . $e->getMessage() . "\n";
     
-    if (env('APP_DEBUG', false)) {
+    // Check if we have debug mode enabled (fallback to false if env() not available)
+    $debug = (function_exists('env') && env('APP_DEBUG', false)) || 
+             (isset($_ENV['APP_DEBUG']) && $_ENV['APP_DEBUG']);
+    
+    if ($debug) {
         echo $e->getTraceAsString() . "\n";
     }
     

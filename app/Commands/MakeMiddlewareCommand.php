@@ -34,7 +34,7 @@ class MakeMiddlewareCommand implements CommandInterface
             $middlewareName .= 'Middleware';
         }
         
-        $middlewarePath = app_path('Middleware/' . $middlewareName . '.php');
+        $middlewarePath = $this->app->basePath() . '/app/Middleware/' . $middlewareName . '.php';
         
         if (file_exists($middlewarePath)) {
             echo "Middleware {$middlewareName} already exists!\n";
@@ -42,7 +42,7 @@ class MakeMiddlewareCommand implements CommandInterface
         }
         
         // Create Middleware directory if it doesn't exist
-        $middlewareDir = app_path('Middleware');
+        $middlewareDir = $this->app->basePath() . '/app/Middleware';
         if (!is_dir($middlewareDir)) {
             mkdir($middlewareDir, 0755, true);
         }

@@ -35,7 +35,7 @@ class MakeModelCommand implements CommandInterface
         }
         
         $className = $modelName . 'Model';
-        $modelPath = app_path('Models/' . $className . '.php');
+        $modelPath = $this->app->basePath() . '/app/Models/' . $className . '.php';
         
         if (file_exists($modelPath)) {
             echo "Model {$className} already exists!\n";
@@ -43,7 +43,7 @@ class MakeModelCommand implements CommandInterface
         }
         
         // Create Models directory if it doesn't exist
-        $modelsDir = app_path('Models');
+        $modelsDir = $this->app->basePath() . '/app/Models';
         if (!is_dir($modelsDir)) {
             mkdir($modelsDir, 0755, true);
         }
