@@ -38,7 +38,7 @@ try {
     $commandManager->register('serve', new ServeCommand($app));
     
     // Load custom commands if they exist
-    $commandsFile = $app->basePath() . '/app/Commands/commands.php';
+    $commandsFile = $app->getBasePath() . '/app/Commands/commands.php';
     if (file_exists($commandsFile)) {
         require_once $commandsFile;
     }
