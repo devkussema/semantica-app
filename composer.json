@@ -3,10 +3,21 @@
     "description": "Semantica Framework - Modern PHP framework application skeleton",
     "type": "project",
     "license": "MIT",
+    "homepage": "https://github.com/devkussema/semantica-app",
+    "support": {
+        "issues": "https://github.com/devkussema/semantica-app/issues",
+        "source": "https://github.com/devkussema/semantica-app"
+    },
     "authors": [
         {
             "name": "Augusto Kussema",
             "email": "dev.kussema@gmail.com"
+        }
+    ],
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/devkussema/semantica-core"
         }
     ],
     "require": {
