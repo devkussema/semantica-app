@@ -1,0 +1,58 @@
+#!/usr/bin/env php
+<?php
+
+declare(strict_types=1);
+
+/**
+ * Semantica CLI - Similar ao Artisan do Laravel
+ * 
+ * @author Augusto Kussema
+ * @since 28 de setembro de 2025
+ */
+
+// Load autoloader
+require_once __DIR__ . '/vendor/autoload.php';
+
+use Semantica\Core\Application;
+use Semantica\Core\Console\CommandManager;
+use App\Commands\MigrateCommand;
+use App\Commands\MakeControllerCommand;
+use App\Commands\MakeModelCommand;
+use App\Commands\MakeMiddlewareCommand;
+use App\Commands\RouteListCommand;
+use App\Commands\ServeCommand;
+
+try {
+    // Initialize application
+    $app = new Application(__DIR__);
+    
+    // Create command manager
+    $commandManager = new CommandManager();
+    
+    // Register default commands
+    $commandManager->register('migrate', new MigrateCommand($app));
+    $commandManager->register('make:controller', new MakeControllerCommand($app));
+    $commandManager->register('make:model', new MakeModelCommand($app));
+    $commandManager->register('make:middleware', new MakeMiddlewareCommand($app));
+    $commandManager->register('route:list', new RouteListCommand($app));
+    $commandManager->register('serve', new ServeCommand($app));
+    
+    // Load custom commands if they exist
+    $commandsFile = app_path('Commands/commands.php');
+    if (file_exists($commandsFile)) {
+        require_once $commandsFile;
+    }
+    
+    // Run command
+    $exitCode = $commandManager->run($argv);
+    exit($exitCode);
+    
+} catch (Throwable $e) {
+    echo "Error executing command: " . $e->getMessage() . "\n";
+    
+    if (env('APP_DEBUG', false)) {
+        echo $e->getTraceAsString() . "\n";
+    }
+    
+    exit(1);
+}

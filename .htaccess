@@ -1,0 +1,30 @@
+# Semantica Framework - Apache Configuration
+# Redirect all requests to public directory
+
+RewriteEngine On
+
+# Handle Angular and other HTML5 requests
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+
+# Redirect all requests to public/index.php
+RewriteRule ^(.*)$ public/index.php [QSA,L]
+
+# Security headers
+<IfModule mod_headers.c>
+    Header always set X-Content-Type-Options nosniff
+    Header always set X-Frame-Options DENY
+    Header always set X-XSS-Protection "1; mode=block"
+    Header always set Referrer-Policy "strict-origin-when-cross-origin"
+</IfModule>
+
+# Deny access to sensitive files
+<FilesMatch "^\.">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
+
+<FilesMatch "\.(env|git|log)$">
+    Order allow,deny
+    Deny from all
+</FilesMatch>

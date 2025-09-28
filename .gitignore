@@ -1,0 +1,47 @@
+# Dependências
+/vendor/
+composer.phar
+composer.lock
+
+# Variáveis de ambiente
+.env
+
+# Cache e logs
+/storage/cache/
+/storage/logs/
+*.log
+
+# Arquivos do sistema
+.DS_Store
+Thumbs.db
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Temporários
+/tmp/
+/temp/
+
+# Banco de dados local
+*.sqlite
+*.db
+
+# Node modules (se usar front-end)
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Build files
+/dist/
+/build/
+
+# Coverage reports
+/coverage/
+
+# PHP Unit
+phpunit.xml
+.phpunit.result.cache
